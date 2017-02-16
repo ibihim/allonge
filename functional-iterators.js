@@ -23,7 +23,7 @@ const foldArrayWith = (fn, terminalValue, [first, ...rest]) =>
 // but still relies on foldArrayWith, so it can only sum arrays
 const arraySum = callLeft(foldArrayWith, (a, b) => a + b, 0);
 
-arraySum([1, 4, 9, 16, 25]);
+const result2 = arraySum([1, 4, 9, 16, 25]);
 
 
 // Even more decoupled
@@ -39,7 +39,7 @@ const sumFoldable = (folder) => folder((a, b) => a + b, 0);
 sumFoldable(foldArray([1, 4, 9, 16, 25]));
 
 
-// Trees
+// with Trees
 const foldTreeWith = (fn, terminalValue, [first, ...rest]) =>
     first === undefined
         ? terminalValue
@@ -49,3 +49,7 @@ const foldTreeWith = (fn, terminalValue, [first, ...rest]) =>
                     foldTreeWith(fn, terminalValue, rest)
                 )
             : fn(first, foldTreeWith(fn, terminalValue, rest));
+
+const foldTree = (tree) => callRight(foldTreeWith, tree);
+
+const result3 = sumFoldable(foldTree([1, [4, [9, 16 ]], 25]));
